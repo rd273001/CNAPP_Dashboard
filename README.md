@@ -33,7 +33,7 @@ You can check the live version of the project here : [CNAPP Dashboard](https://c
 
    ```bash
    git clone https://github.com/rd273001/CNAPP_Dashboard.git
-   cd CNAPP-Dashboard
+   cd CNAPP_Dashboard
    ```
 
 2. **Install dependencies:**
