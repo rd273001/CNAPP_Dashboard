@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from './Modal';
 import { CgClose } from 'react-icons/cg';
 import { toggleAddWidgetSidebarVisibility } from '../redux/dashboard/modalVisibilitySlice';
+import { updateCategoriesWithSelectedWidgets } from '../redux/dashboard/widgetsSlice';
 
 const AddWidgetSidebar = ( { isOpen } ) => {
   const dispatch = useDispatch();
@@ -13,6 +14,30 @@ const AddWidgetSidebar = ( { isOpen } ) => {
 
   const onClose = () => {
     dispatch( toggleAddWidgetSidebarVisibility() );
+  };
+
+  const isChecked = ( categoryId, widgetId ) => {
+    return categoriesWithWidgetsSelected.find( category => category.id === categoryId ).widgets.some( widget => widget.id === widgetId );
+  };
+
+  const toggleWidgetSelectCheckbox = ( categoryId, widget, checked ) => {
+    setCategoriesWithWidgetsSelected( prevState => {
+      const newCategories = prevState.map( category => {
+        if ( category.id === categoryId ) {
+          const newWidgets = checked
+            ? [...category.widgets, widget]
+            : category.widgets.filter( w => w.id !== widget.id );
+          return { ...category, widgets: newWidgets };
+        }
+        return category;
+      } );
+      return newCategories;
+    } );
+  };
+
+  const handleConfirmAddWidgets = () => {
+    dispatch( updateCategoriesWithSelectedWidgets( categoriesWithWidgetsSelected ) );
+    onClose();
   };
 
   return (
@@ -44,9 +69,16 @@ const AddWidgetSidebar = ( { isOpen } ) => {
                   <input
                     type='checkbox'
                     id={ `widget-${ category.id }-${ widget.id }` }
+                    checked={ isChecked( category.id, widget.id ) }
+                    onChange={ ( e ) => toggleWidgetSelectCheckbox( category.id, widget, e.target.checked ) }
                     className='mr-2 accent-blue-900'
                   />
-                  <label className='flex-1 text-balance sm:text-base text-sm text-blue-900 font-medium' htmlFor={ `widget-${ category.id }-${ widget.id }` }>{ widget.name }</label>
+                  <label
+                    className={ `flex-1 text-balance sm:text-base text-sm ${ isChecked( category.id, widget.id ) ? 'text-blue-900 font-medium' : 'text-gray-400' }` }
+                    htmlFor={ `widget-${ category.id }-${ widget.id }` }
+                  >
+                    { widget.name }
+                  </label>
                 </div>
               ) ) }
             </div>
@@ -61,6 +93,7 @@ const AddWidgetSidebar = ( { isOpen } ) => {
             Cancel
           </button>
           <button
+            onClick={ handleConfirmAddWidgets }
             className='bg-blue-900 text-white font-semibold py-1 px-5 rounded-md hover:opacity-75 active:scale-110'
           >
             Confirm
