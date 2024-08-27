@@ -21,9 +21,22 @@ const Widget = ( { widget, categoryId } ) => {
     switch ( widget?.type ) {
       case 'doughnut':
         return (
-          <Suspense fallback={ <Spinner /> }>
-            <RingChart widget={ widget } />
-          </Suspense>
+          <>
+            <Suspense fallback={ <Spinner /> }>
+              <RingChart widget={ widget } />
+            </Suspense>
+            <div className='flex flex-col flex-1 justify-center gap-2'>
+              { widget.data.labels.map( ( label, index ) => (
+                <div key={ index } className='flex items-center text-balance'>
+                  <div
+                    className='size-3 rounded mr-2'
+                    style={ { backgroundColor: widget.data.datasets[0].backgroundColor[index] } }
+                  />
+                  <p className='text-xs font-medium'>{ label } ({ widget.data.datasets[0].data[index] })</p>
+                </div>
+              ) ) }
+            </div>
+          </>
         );
       case 'horizontalBar':
         return <HorizontalLineBar widget={ widget } />;
