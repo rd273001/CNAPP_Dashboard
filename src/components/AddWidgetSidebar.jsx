@@ -42,7 +42,7 @@ const AddWidgetSidebar = ( { isOpen } ) => {
 
   return (
     <Modal onClose={ onClose } className={ `fixed inset-y-0 right-0 lg:w-[45%] md:w-[60%] w-[70%] bg-white flex flex-col shadow-lg transform ${ isOpen ? 'translate-x-0' : 'translate-x-full' } transition-transform duration-300 ease-in-out` }>
-      <div className='p-4 flex flex-col flex-1 relative sm:text-base text-sm overflow-y-scroll scrollbar-hidden mb-12'>
+      <div className='p-4 flex flex-col flex-1 relative sm:text-base text-sm overflow-hidden'>
         <div className='flex justify-between items-center mb-4 -mx-4 -mt-4 p-2 bg-blue-900'>
           <h2 className='md:text-lg text-base text-white'>Add Widget</h2>
           <button onClick={ onClose } className='text-white hover:text-red-400'>
@@ -50,7 +50,7 @@ const AddWidgetSidebar = ( { isOpen } ) => {
           </button>
         </div>
         <p className='mb-4'>Personalise your dashboard by adding the following widget</p>
-        <div className='flex mb-4'>
+        <div className='flex mb-4 overflow-x-auto scrollbar-hidden'>
           { categories.map( category => (
             <button
               key={ category.id }
@@ -61,7 +61,7 @@ const AddWidgetSidebar = ( { isOpen } ) => {
             </button>
           ) ) }
         </div>
-        <div className='overflow-y-scroll scrollbar-hidden'>
+        <div className='overflow-y-auto scrollbar-hidden mb-10'>
           { categories.map( category => (
             <div key={ category.id } className={ activeTab === String( category.name ).split( ' ' )[0] ? '' : 'hidden' }>
               { category.widgets.map( widget => (

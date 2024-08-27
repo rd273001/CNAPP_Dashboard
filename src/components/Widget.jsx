@@ -41,7 +41,7 @@ const Widget = ( { widget, categoryId } ) => {
       case 'horizontalBar':
         return <HorizontalLineBar widget={ widget } />;
       case 'text':
-        return <p className='flex flex-1 items-center justify-center text-black'>{ widget?.data ?? 'No data available!' }</p>;
+        return <p className='flex flex-1 items-center justify-center text-black'>{ widget?.data || 'No data available!' }</p>;
       default:
         return <p className='flex flex-col flex-1 items-center justify-center text-sm'>
           <img src={ lineChartIcon } className='size-20' />No Graph data available!</p>;
