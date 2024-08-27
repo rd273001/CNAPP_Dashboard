@@ -2,10 +2,11 @@ import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 import Widget from './Widget';
 
-const Category = ( { category } ) => {
+const Category = ( { category, onAddWidget } ) => {
 
   const handleAddWidget = ( event ) => {
     event.stopPropagation();  // prevent the event from bubbling up to the card
+    onAddWidget( category.id );
   };
 
   return (
@@ -17,6 +18,7 @@ const Category = ( { category } ) => {
             <Widget
               key={ widget.id }
               widget={ widget }
+              categoryId={ category.id }
             />
           ) )
         }

@@ -4,11 +4,17 @@ import HorizontalLineBar from './HorizontalLineBar';
 import Spinner from './Spinner';
 const RingChart = lazy( () => import( './RingChart' ) );
 import lineChartIcon from '../assets/lineChartIcon.svg';
+import { useDispatch } from 'react-redux';
+import { setCategoryId, setWidgetId } from '../redux/dashboard/widgetsSlice';
+import { toggleDeleteWidgetAlertVisibility } from '../redux/dashboard/modalVisibilitySlice';
 
-const Widget = ( { widget } ) => {
+const Widget = ( { widget, categoryId } ) => {
+  const dispatch = useDispatch();
 
   const handleWidgetDelete = () => {
-    // Delete widget logic here
+    dispatch( setCategoryId( categoryId ) );
+    dispatch( setWidgetId( widget.id ) );
+    dispatch( toggleDeleteWidgetAlertVisibility() );
   };
 
   const renderChart = () => {
@@ -22,7 +28,7 @@ const Widget = ( { widget } ) => {
       case 'horizontalBar':
         return <HorizontalLineBar widget={ widget } />;
       case 'text':
-        return <p className='flex flex-1 items-center justify-center text-black'>{ widget?.content || 'No Content available!' }</p>;
+        return <p className='flex flex-1 items-center justify-center text-black'>{ widget?.data ?? 'No data available!' }</p>;
       default:
         return <p className='flex flex-col flex-1 items-center justify-center text-sm'>
           <img src={ lineChartIcon } className='size-20' />No Graph data available!</p>;
